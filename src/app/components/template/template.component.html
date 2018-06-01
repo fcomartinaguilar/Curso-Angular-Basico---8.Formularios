@@ -17,16 +17,16 @@
                minlength="5"
                #nombre="ngModel">
 
-               <div *ngIf="nombre.errors?.required" class="invalid-feedback" >
+               <div *ngIf="nombre.errors?.required" class="form-control-invalid-feedback" >
                  Este campo es obligatorio
                </div>
-               <div *ngIf="nombre.errors?.minlength" class="invalid-feedback">
+               <div *ngIf="nombre.errors?.minlength" class="form-control-invalid-feedback">
                  Tamaño mínimo erroneo --> {{nombre.errors.minlength.requiredLength}} 
                 </div>
       </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" [ngClass]="{'is-invalid': (apellido.errors?.required || apellido.errors?.minlength) && apellido.touched }" >
       <label class="col-2 col-form-label">Apellido</label>
       <div class="col-8">
 
@@ -36,11 +36,15 @@
                [(ngModel)]="usuario.apellido"
                placeholder="Apellido"
                required
+               minlength="5"
                #apellido>
 
-          <div *ngIf="apellido.errors?.required" >
+          <div *ngIf="apellido.errors?.required" class="form-control-invalid-feedback" >
             Este campo es obligatorio
           </div>
+          <div *ngIf="apellido.errors?.minlength" class="form-control-invalid-feedback">
+            Tamaño mínimo erroneo --> {{apellido.errors.minlength.requiredLength}} 
+           </div>
       </div>
     </div>
 
@@ -68,15 +72,108 @@
     </div>
   </div>
 
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Pais</label>
+    <div class="col-md-8">
+      <select 
+            [(ngModel)]="usuario.pais"
+            class="form-control" 
+            name="pais">
+        <option value="">Selecciones un pais</option>
+        <option [value]="pais.codigo" *ngFor="let pais of paises">
+          {{ pais.nombre }}
+        </option>
+
+      </select>
+
+    </div>
+  </div>
+      
+  <!-- Radios de forma estatica -->
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Sexo</label>
+    <div class="col-md-8">
+      <div class="custom-control custom-radio custom-control-inline">
+        <input 
+            id="customRadioInline1"
+            type="radio" 
+            name="sexo" 
+            class="custom-control-input"
+            [(ngModel)]="usuario.sexo" 
+            value="Hombre">
+        <label class="custom-control-label" for="customRadioInline1">Hombre</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input 
+            id="customRadioInline2"
+            type="radio" 
+            name="sexo" 
+            class="custom-control-input"
+            [(ngModel)]="usuario.sexo" 
+            value="Mujer">
+        <label class="custom-control-label" for="customRadioInline2">Mujer</label>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Radios de forma dinamica -->
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Sexo</label>
+    <div class="col-md-8">
+      <div *ngFor="let s of sexos" class="custom-control custom-radio custom-control-inline">
+        <input 
+            id="customRadioInline3"
+            type="radio" 
+            name="sexo" 
+            class="custom-control-input"
+            [(ngModel)]="usuario.sexo" 
+            [value]="s">
+        <label class="custom-control-label" for="customRadioInline3">{{s}}</label>
+    
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Acepta</label>
+    <div class="col-md-8">
+      <div class="form-check form-check-inline">
+        <input 
+            [(ngModel)]="usuario.acepta" 
+            name="acepta"
+            required 
+            class="form-check-input" 
+            type="checkbox" 
+            id="inlineCheckbox1" 
+            value="option1">
+        <label class="form-check-label" for="inlineCheckbox1">Acepta las condiciones</label>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="form-group row">
+    <label class="col-2 col-form-label">XXXX</label>
+    <div class="col-md-8">
+
+
+    </div>
+  </div>
 
 
   <div class="form-group row">
     <label class="col-2 col-form-label">&nbsp;</label>
     <div class="input-group col-md-8">
-      <button type="submit" class="btn btn-outline-primary">
+      <button 
+          [disabled]="!forma.valid"
+          type="submit" 
+          class="btn btn-outline-primary">
         Guardar
       </button>
     </div>
   </div>
 
 </form>
+
+<pre>{{usuario | json}}</pre>
